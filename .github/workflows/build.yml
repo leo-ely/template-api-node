@@ -1,0 +1,31 @@
+name: Build workflow
+
+on: [ push ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 22.x ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: NPM setup
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Build project
+        run: npm run build
+
+      - name: Compress build files
+        run: zip -r artifact.zip ./dist/
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: artifact
+          path: ./artifact.zip
+          retention-days: 15

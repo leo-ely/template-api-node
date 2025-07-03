@@ -1,0 +1,19 @@
+name: NPM composite action
+description: Installs NPM, configures it and runs the needed tasks
+
+inputs:
+  node-version:
+    description: Node.js version
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Node.js setup
+      uses: actions/setup-node@v4
+      with:
+        cache: "npm"
+        node-version: ${{ inputs.node-version }}
+    - name: Install dependencies
+      run: npm install
+      shell: bash
