@@ -21,8 +21,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: NPM setup
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ matrix.node-version }}
       - name: Build project
-        uses: ./.github/workflows/build.yml
+        run: npm run build
+
       - name: CodeQL init
         uses: github/codeql-action/init@v3
         with:
