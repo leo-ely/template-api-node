@@ -18,14 +18,15 @@ jobs:
     strategy:
       matrix:
         language: [ "javascript" ]
-        node-version: [ 22.x ]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: CodeQL init
         uses: github/codeql-action/init@v3
         with:
-          build-mode: autobuild
+          build-mode: manual
           languages: ${{ matrix.language }}
+      - name: Build project
+        uses: ./.github/workflows/build.yml
       - name: CodeQL Analysis
         uses: github/codeql-action/analyze@v3
